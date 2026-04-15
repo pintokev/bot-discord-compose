@@ -14,7 +14,7 @@ services:
 
   gpt:
     build:
-      context: ./GPT
+      context: ./gpt
     image: gpt
     restart: unless-stopped
     environment:
