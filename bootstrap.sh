@@ -8,8 +8,14 @@ GPT_REPO_URL="git@github.com:pintokev/response_gpt_gcp.git"
 GEMINI_REPO_URL="git@github.com:pintokev/gemini_image.git"
 
 DISCORD_DIR="${BASE_DIR}/discord"
-GPT_DIR="${BASE_DIR}/GPT"
+GPT_DIR="${BASE_DIR}/gpt"
 GEMINI_DIR="${BASE_DIR}/gemini"
+
+DETACH_MODE="false"
+
+if [[ "${1:-}" == "-d" ]]; then
+  DETACH_MODE="true"
+fi
 
 clone_if_missing() {
   local repo_url="$1"
@@ -49,6 +55,12 @@ check_file "${DISCORD_DIR}/Dockerfile"
 check_file "${GPT_DIR}/Dockerfile"
 check_file "${GEMINI_DIR}/Dockerfile"
 
-echo "[INFO] Lancement de docker compose..."
 cd "${BASE_DIR}"
-docker compose up --build
+
+if [[ "${DETACH_MODE}" == "true" ]]; then
+  echo "[INFO] Lancement de docker compose en arrière-plan..."
+  docker compose up --build -d
+else
+  echo "[INFO] Lancement de docker compose..."
+  docker compose up --build
+fi
