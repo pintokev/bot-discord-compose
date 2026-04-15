@@ -1,7 +1,7 @@
 services:
   discord:
     build:
-      context: ../discord
+      context: ./discord
     image: discord
     restart: unless-stopped
     environment:
@@ -14,7 +14,7 @@ services:
 
   gpt:
     build:
-      context: ../GPT
+      context: ./GPT
     image: gpt
     restart: unless-stopped
     environment:
@@ -26,7 +26,7 @@ services:
 
   gemini:
     build:
-      context: ../gemini
+      context: ./gemini
     image: gemini
     restart: unless-stopped
     environment:
