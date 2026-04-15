@@ -1,0 +1,41 @@
+services:
+  discord:
+    build:
+      context: ../discord
+    image: discord
+    restart: unless-stopped
+    environment:
+      tokenDiscord: ${tokenDiscord}
+    depends_on:
+      - gpt
+      - gemini
+    networks:
+      - bot-discord
+
+  gpt:
+    build:
+      context: ../GPT
+    image: gpt
+    restart: unless-stopped
+    environment:
+      tokenGPT: ${tokenGPT}
+    ports:
+      - "2000:8080"
+    networks:
+      - bot-discord
+
+  gemini:
+    build:
+      context: ../gemini
+    image: gemini
+    restart: unless-stopped
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    ports:
+      - "5000:8080"
+    networks:
+      - bot-discord
+
+networks:
+  bot-discord:
+    driver: bridge
