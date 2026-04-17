@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gpt
+  namespace: bot-discord
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gpt
+  template:
+    metadata:
+      labels:
+        app: gpt
+    spec:
+      serviceAccountName: gpt-sa
+      containers:
+        - name: gpt
+          image: europe-west1-docker.pkg.dev/bot-discord-493608/bot-discord/gpt:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GCP_PROJECT_ID
+              value: bot-discord-493608
+          resources:
+              requests:
+                cpu: "250m"
+                memory: "256Mi"
+              limits:
+                cpu: "500m"
+                memory: "512Mi"

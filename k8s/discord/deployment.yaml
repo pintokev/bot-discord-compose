@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discord
+  namespace: bot-discord
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: discord
+  template:
+    metadata:
+      labels:
+        app: discord
+    spec:
+      serviceAccountName: discord-sa
+      containers:
+        - name: discord
+          image: europe-west1-docker.pkg.dev/bot-discord-493608/bot-discord/discord:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GCP_PROJECT_ID
+              value: bot-discord-493608
+            - name: GPT_URL
+              value: http://gpt:8080
+            - name: GEMINI_URL
+              value: http://gemini:8080
+            - name: ENV
+              value: production
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
