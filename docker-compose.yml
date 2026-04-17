@@ -5,7 +5,11 @@ services:
     image: discord
     restart: unless-stopped
     environment:
-      tokenDiscord: ${tokenDiscord}
+      GCP_PROJECT_ID: bot-discord-493608
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp-adc.json
+      ENV: developpement
+    volumes:
+      - /tmp/gcp-adc.json:/tmp/gcp-adc.json:ro
     depends_on:
       - gpt
       - gemini
@@ -18,7 +22,10 @@ services:
     image: gpt
     restart: unless-stopped
     environment:
-      tokenGPT: ${tokenGPT}
+      GCP_PROJECT_ID: bot-discord-493608
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp-adc.json
+    volumes:
+      - /tmp/gcp-adc.json:/tmp/gcp-adc.json:ro
     ports:
       - "2000:8080"
     networks:
@@ -30,7 +37,10 @@ services:
     image: gemini
     restart: unless-stopped
     environment:
-      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      GCP_PROJECT_ID: bot-discord-493608
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp-adc.json
+    volumes:
+      - /tmp/gcp-adc.json:/tmp/gcp-adc.json:ro
     ports:
       - "5000:8080"
     networks:
