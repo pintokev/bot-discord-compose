@@ -4,6 +4,8 @@ services:
       context: ./discord
     image: discord
     restart: unless-stopped
+    env_file:
+      - ./.env
     environment:
       GCP_PROJECT_ID: bot-discord-493608
       GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp-adc.json
@@ -11,8 +13,10 @@ services:
     volumes:
       - /tmp/gcp-adc.json:/tmp/gcp-adc.json:ro
     depends_on:
-      - gpt
-      - gemini
+      gpt:
+        condition: service_healthy
+      gemini:
+        condition: service_healthy
     networks:
       - bot-discord
 
@@ -21,11 +25,14 @@ services:
       context: ./gpt
     image: gpt
     restart: unless-stopped
+    env_file:
+      - ./.env
     environment:
       GCP_PROJECT_ID: bot-discord-493608
       GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp-adc.json
     volumes:
       - /tmp/gcp-adc.json:/tmp/gcp-adc.json:ro
+      - ./data/gpt:/app/data
     ports:
       - "2000:8080"
     networks:
@@ -36,6 +43,8 @@ services:
       context: ./gemini
     image: gemini
     restart: unless-stopped
+    env_file:
+      - ./.env
     environment:
       GCP_PROJECT_ID: bot-discord-493608
       GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp-adc.json

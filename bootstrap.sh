@@ -50,7 +50,10 @@ clone_if_missing "${GEMINI_REPO_URL}" "${GEMINI_DIR}" "gemini"
 
 echo "[INFO] Vérification des fichiers nécessaires..."
 check_file "${BASE_DIR}/docker-compose.yml"
-check_file "${BASE_DIR}/.env"
+if [ ! -f "${BASE_DIR}/.env" ]; then
+  echo "[INFO] Création de ${BASE_DIR}/.env depuis .env.example"
+  cp "${BASE_DIR}/.env.example" "${BASE_DIR}/.env"
+fi
 check_file "${DISCORD_DIR}/Dockerfile"
 check_file "${GPT_DIR}/Dockerfile"
 check_file "${GEMINI_DIR}/Dockerfile"

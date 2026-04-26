@@ -17,14 +17,12 @@ spec:
       containers:
         - name: discord
           image: europe-west1-docker.pkg.dev/bot-discord-493608/bot-discord/discord:latest
-          ports:
-            - containerPort: 8080
           env:
             - name: GCP_PROJECT_ID
               value: bot-discord-493608
-            - name: GPT_URL
+            - name: GPT_BASE_URL
               value: http://gpt:8080
-            - name: GEMINI_URL
+            - name: GEMINI_BASE_URL
               value: http://gemini:8080
             - name: ENV
               value: production
